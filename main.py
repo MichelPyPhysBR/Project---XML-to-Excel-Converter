@@ -10,7 +10,10 @@ def pegar_infor(arquivo):
         dic_arquivo = xmltodict.parse(arquivo_xml)
 
         try:
-            infor_nf = dic_arquivo["NFe"]["infNFe"]
+            if "NFe" in dic_arquivo:
+                infor_nf = dic_arquivo["NFe"]["infNFe"]
+            else:
+                infor_nf = dic_arquivo["nfeProc"]["NFe"]["infNFe"]
             numero_nota = infor_nf["@Id"]
             empresa_emissora = infor_nf["emit"]["xNome"]
             nome_cliente = infor_nf["dest"]["xNome"]
