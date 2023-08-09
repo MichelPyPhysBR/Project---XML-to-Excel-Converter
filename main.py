@@ -3,9 +3,9 @@ import os  # manusear arquivos
 import pandas as pd
 
 
-def pegar_infor(arquivo):
-    print(f"Pegou as informações {arquivo}")
-    with open(f'nfs/{arquivo}', "rb") as arquivo_xml:
+def pegar_infor(nome_arquivo, valores):
+   # print(f"Pegou as informações {nome_arquivo}")
+    with open(f'nfs/{nome_arquivo}', "rb") as arquivo_xml:
         dic_arquivo = xmltodict.parse(arquivo_xml)
 
         if "NFe" in dic_arquivo:
@@ -20,14 +20,16 @@ def pegar_infor(arquivo):
             peso = infor_nf["transp"]["vol"]["pesoB"]
         else:
             peso = "Não informado!"
-        print(numero_nota, empresa_emissora, nome_cliente, endereco, peso, sep="\n")
+        valores.append([numero_nota, empresa_emissora, nome_cliente, endereco, peso])
 
 
 lista_arquivos = os.listdir("nfs")
 
+colunas = ["numero_nota", "empresa_emissora", "nome_cliente", "endereco", "peso"]
+valores = []
+
 for arquivo in lista_arquivos:
-    pegar_infor(arquivo)
-    # break
-
-
-
+    pegar_infor(arquivo, valores)
+ 
+tabela = pd.DataFrame(columns=colunas, data=valores)
+tabela.to_excel("NotasFiscais.xlsx", index=False)
