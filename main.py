@@ -18,7 +18,10 @@ def pegar_infor(arquivo):
             empresa_emissora = infor_nf["emit"]["xNome"]
             nome_cliente = infor_nf["dest"]["xNome"]
             endereco = infor_nf["dest"]["enderDest"]
-            peso = infor_nf["transp"]["vol"]["pesoB"]
+            if "vol" in dic_arquivo:
+                peso = infor_nf["transp"]["vol"]["pesoB"]
+            else:
+                peso = "Não informado!"
             print(numero_nota, empresa_emissora, nome_cliente, endereco, peso, sep="\n")
         except Exception as e:
             print(e)
